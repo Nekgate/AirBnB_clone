@@ -30,7 +30,7 @@ class BaseModel:
             storage.new(self)
 
     def save(self):
-        """Updates the public instance atrribute updated_at whenever it is changed"""
+        """Updates the public instance atrribute updated_at whenever changed"""
 
         self.updated_at = datetime.now()
         storage.save()
@@ -39,7 +39,7 @@ class BaseModel:
         """Returns a readable string representation of BaseModel instances"""
 
         return "[{}] ({}) {}".format(type(self).__name__,
-                                    self.id, self.__dict__)
+                                     self.id, self.__dict__)
 
     def to_dict(self):
         """Creates a copy of instance attributes"""
