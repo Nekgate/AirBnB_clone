@@ -1,11 +1,11 @@
 #!/usr/bin/python3
-"""This model contains the class place"""
+"""This model defines the class place"""
 
 from models.base_model import BaseModel
 
 
 class Place(BaseModel):
-    """This model inherits from base model"""
+    """The class place inherits from base model"""
     name = ""
     user_id = ""
     city_id = ""
