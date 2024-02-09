@@ -1,9 +1,29 @@
 #!/usr/bin/python3
 """ Module for console that contains the entry point of command interpreter """
+
+
 import cmd
+import re
+import models
+from models.base_model import BaseModel
 from models import storage
 import json
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
+class_home = {
+    "BaseModel": BaseModel,
+    "User": User,
+    "Place": Place,
+    "Amenity": Amenity,
+    "city": City,
+    "Review": Review,
+    "State": State
+}
 
 class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
@@ -35,7 +55,7 @@ class HBNBCommand(cmd.Cmd):
             try:
                 go_cls = globals().get(line, None)
                 obj = glo_cls()
-                obj.save
+                obj.save()
                 print(obj.id)  # Print the id
             except Exception:
                 print("** class doesn't exist **")
@@ -48,12 +68,12 @@ class HBNBCommand(cmd.Cmd):
         
         if len(arrg) < 1:
             print("** class name missing **")
-        elif arrg[0] not in class_hom:
+        elif arrg[0] not in class_home:
             print("** class doesn't exist **")
         elif len(arrg) < 2:
             print("** instances id missing **")
         else:
-            new_string = f"{arrg[0.]}.{arrg[1]}"
+            new_string = f"{arrg[0]}.{arrg[1]}"
             if new_string not in storage.all():
                 print("** no instance found **")
             else:
@@ -81,7 +101,7 @@ class HBNBCommand(cmd.Cmd):
         """ Prints all string representation of all instrrances """
         objects = []
         if line == "":
-            print([strr(value) for key, value in storage.all().items()])
+            print([str(value) for key, value in storage.all().items()])
         else:
             strr = line.split(" ")
             if strr[0] not in class_home:
@@ -90,7 +110,7 @@ class HBNBCommand(cmd.Cmd):
                 for key, value in storage.all().items():
                     clas = key.split(".")
                     if clas[0] == strr[0]:
-                        objects.append(strr(value))
+                        objects.append(str(value))
                 print(objects)
 
     def do_update(self, line):
@@ -99,17 +119,17 @@ class HBNBCommand(cmd.Cmd):
         if len(arrg) < 1:
             print("** class name missing **")
             return
-        elif arrg[0] not in class_hom:
+        elif arrg[0] not in class_home:
             print("** class doesn't exist **")
             return
-        elif len(args) < 2:
+        elif len(arrg) < 2:
             print("** instance id missing **")
             return
         else:
             new_string = f"{arrg[0]}.{arrg[1]}"
-            if new_string not in storage.all().key():
+            if new_string not in storage.all().keys():
                 print("** no instance found **")
-            elif len(args) < 3:
+            elif len(arrg) < 3:
                 print("** attribute name missing **")
                 return
             elif len(arrg) < 4:
@@ -117,7 +137,7 @@ class HBNBCommand(cmd.Cmd):
                 return
             else:
                 setattr(storage.all()[new_str], arrg[2], arrg[3])
-                strrorage.save()
+                strorage.save()
 
 
 if __name__ == '__main__':
