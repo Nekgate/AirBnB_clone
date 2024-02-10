@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Module for console that contains the entry point of command interpreter """
+"""Module for console that contains the entry point of command interpreter"""
 
 
 import cmd
@@ -20,17 +20,18 @@ class_home = {
     "User": User,
     "Place": Place,
     "Amenity": Amenity,
-    "city": City,
+    "City": City,
     "Review": Review,
     "State": State
 }
 
 
 class HBNBCommand(cmd.Cmd):
+    """Entry point defines a prompt (hbnb)"""
     prompt = '(hbnb) '
 
     def do_EOF(self, line):
-        """ Exit the program when EOF (Ctrl+D) is entered """
+        """Exit the program when EOF (Ctrl+D) is entered"""
         print("")  # Print a newline before exiting
         return True
 
