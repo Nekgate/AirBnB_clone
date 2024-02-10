@@ -56,7 +56,7 @@ class HBNBCommand(cmd.Cmd):
                 glo_cls = globals().get(line, None)
                 obj = glo_cls()
                 obj.save()
-                print(obj.id)  # Print the id
+                print(obj.id)  # Print id
             except Exception:
                 print("** class doesn't exist **")
         else:
@@ -111,7 +111,7 @@ class HBNBCommand(cmd.Cmd):
                     clas = key.split(".")
                     if clas[0] == strr[0]:
                         objects.append(str(value))
-                print(objects)
+                print(objects) 
 
     def do_update(self, line):
         """ Updates an instance based on the class name and id """
@@ -142,7 +142,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, line):
         """ Print and count all class instances """
         Cclass = globals().get(line, None)
-        if Cclass is known:
+        if Cclass is None:
             print("** class doesn't exist **")
             return
         count = 0
@@ -151,7 +151,9 @@ class HBNBCommand(cmd.Cmd):
                 count += 1
             print(count)
 
+
     def default(self, line):
+        
         if line in None:
             return
 
@@ -159,8 +161,8 @@ class HBNBCommand(cmd.Cmd):
         paramPattern = """^"([^"]+)"(?:,\s*(?:"([^"]+)"|(\{[^}]+\}))(?:,\s*(?:("?[^"]+"?)))?)?"""
         match = re.match(cmdPattern, line)
         if not match:
-            super().default(line)
-            return
+           super().default(line)
+           return
         mName, method, param = match.groups()
         m = re.match(paramPattern, param)
         param = [item for item in match.groups() if item] if match else []
@@ -180,7 +182,7 @@ class HBNBCommand(cmd.Cmd):
             return self.do_destroy(cmd)
 
         if method == 'update':
-            return self.do_update(cmd)
+           return self.do_update(cmd)
 
 
 if __name__ == '__main__':
