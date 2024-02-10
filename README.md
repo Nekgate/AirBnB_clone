@@ -1,44 +1,59 @@
-0x00. AirBnB clone - The console
+# Airbnb Clone - The Console
 
-Background Context
-Welcome to the AirBnB clone project!
+Description
 
-First step: Write a command interpreter to manage your AirBnB objects.
-This is the first step towards building your first full web application: the AirBnB clone. This first step is very important because you will use what you build during this project with all other following projects: HTML/CSS templating, database storage, API, front-end integration…
+This project is aimed at creating a command line interface for managing and interacting with an Airbnb like application. The console aims to replicate the core functionalities of the application in a command line interfacde, providing users with convenient and efficient way to manage and interact with application data and features. The console serves as a control center where users can input commands to perform various tasks realted creating, updating and deleting users from the application.
 
-Each task is linked and will help you to:
+Command Interpreter
 
-put in place a parent class (called BaseModel) to take care of the initialization, serialization and deserialization of your future instances
-create a simple flow of serialization/deserialization: Instance <-> Dictionary <-> JSON string <-> file
-create all classes used for AirBnB (User, State, City, Place…) that inherit from BaseModel
-create the first abstracted storage engine of the project: File storage.
-create all unittests to validate all our classes and storage engine
-What’s a command interpreter?
-Do you remember the Shell? It’s exactly the same but limited to a specific use-case. In our case, we want to be able to manage the objects of our project:
+The command line interpreter serves as the control center for interacting with the Airbnb clone application. It allows users to input commands to perform various tasks related to managing and accessing data within the application.
 
-Create a new object (ex: a new User or a new Place)
-Retrieve an object from a file, a database etc…
-Do operations on objects (count, compute stats, etc…)
-Update attributes of an object
-Destroy an object
 
-The length of your files will be tested using wc
-All your modules should have a documentation (python3 -c 'print(__import__("my_module").__doc__)')
-All your classes should have a documentation (python3 -c 'print(__import__("my_module").MyClass.__doc__)')
-All your functions (inside and outside a class) should have a documentation (python3 -c 'print(__import__("my_module").my_function.__doc__)' and python3 -c 'print(__import__("my_module").MyClass.my_function.__doc__)')
-A documentation is not a simple word, it’s a real sentence explaining what’s the purpose of the module, class or method (the length of it will be verified)
-Python Unit Tests
-Allowed editors: vi, vim, emacs
-All your files should end with a new line
-All your test files should be inside a folder tests
-You have to use the unittest module
-All your test files should be python files (extension: .py)
-All your test files and folders should start by test_
-Your file organization in the tests folder should be the same as your project
-e.g., For models/base_model.py, unit tests must be in: tests/test_models/test_base_model.py
-e.g., For models/user.py, unit tests must be in: tests/test_models/test_user.py
-All your tests should be executed by using this command: python3 -m unittest discover tests
-You can also test file by file by using this command: python3 -m unittest tests/test_models/test_base_model.py
-All your modules should have a documentation (python3 -c 'print(__import__("my_module").__doc__)')
-All your classes should have a documentation (python3 -c 'print(__import__("my_module").MyClass.__doc__)')
-All your functions (inside and outside a class) should have a documentation (python3 -c 'print(__import__("my_module").my_function.__doc__)' and python3 -c 'print(__import__("my_module").MyClass.my_function.__doc__)')
+## Features
+
+- Create, update and delete listings from the application
+- Manage user accounts
+- Search and filter to help users find specific listings
+- Generating reports and analyzing data related to user activity, bookings and listings
+- Review and rating sysytem for the Airbnb application
+
+
+## Installation
+
+1. Clone the Airbnb clone_repository
+
+git clone https://github.com/your_username/Airbnb-clone
+
+2. Navigate to the project directory
+    
+cd Airbnb-clone-console
+
+3. Start the console application using python3
+python3 console.py
+## Usage
+
+Once the application is running, you can interact with it using the command-line interface. The application provides a set of commands and options to perform various tasks. Here are some examples:
+
+1. To create a new property listing:
+create property --name "Raj Apartment" --price 100 --location "Down Town"
+
+2. To update a property's information:
+update property --id 412 --name "This Room"
+
+
+3. To book a listing
+book_listing 1234 2024-02-30 2024-03-15
+
+4. To delete a listing
+delete_listing 12345
+
+For a full list of available commands and options, refer to the documentation or use the --help
+## Authors
+
+This file contains all contributors to the repository
+
+Timothy Goodluck
+
+Stephen Ouma
+
+
