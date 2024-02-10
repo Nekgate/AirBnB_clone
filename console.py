@@ -65,7 +65,7 @@ class HBNBCommand(cmd.Cmd):
 
     def emptyline(self):
         """ overwriting the emptyline method """
-        return False
+        pass
 
     def do_create(self, arg):
         """This creates a command a new instance"""
