@@ -85,7 +85,7 @@ class HBNBCommand(cmd.Cmd):
         arrg = line.split()
         if len(arrg) < 1:
             print("** class name missing **")
-        elif arrg[0] not in class_hom:
+        elif arrg[0] not in class_home:
             print("** class doesn't exist **")
         elif len(arrg) < 2:
             print("** instance id missing **")
@@ -136,9 +136,8 @@ class HBNBCommand(cmd.Cmd):
                 print("** value missing **")
                 return
             else:
-                setattr(storage.all()[new_str], arrg[2], arrg[3])
-                strorage.save()
-
+                setattr(storage.all()[new_string], arrg[2], arrg[3])
+                storage.save()
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
