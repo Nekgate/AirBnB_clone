@@ -23,7 +23,8 @@ class_dict = {
 
 
 class FileStorage:
-    """This file storage class is responsible for the serialization of instances to JSON
+    """
+    This file storage class is responsible for the serialization of instances to JSON
     and deserialization of JSON to instances
     """
     
