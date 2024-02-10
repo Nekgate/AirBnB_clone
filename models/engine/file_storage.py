@@ -47,14 +47,6 @@ class FileStorage:
         self.__objects[name] = obj.to_dict()
         self.save()
 
-    def destroy(self, obj):
-        """It destroys objects from __objects"""
-
-        name = obj.__class__.__name__ + "." + obj.id
-        if name in self.__objects:
-            del self.__objects[name]
-            self.save()
-
     def save(self):
         """Serializes __objects to the JSON file __file_path."""
 
