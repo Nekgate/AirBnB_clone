@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This defines the test module for base_model.py"""
+"""This defines the test module for base_model"""
 
 import unittest
 import os

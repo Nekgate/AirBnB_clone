@@ -3,6 +3,7 @@
 This is the Base Model it defines all common
 attributes for other classes.
 """
+
 import uuid
 from datetime import datetime
 import models
