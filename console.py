@@ -151,6 +151,18 @@ class HBNBCommand(cmd.Cmd):
         except Exception:
             pass
 
+    def do_count(self, line):
+        """Print the count all class instances"""
+        sclass = globals().get(line, None)
+        if sclass is None:
+            print("** class doesn't exist **")
+            return
+        count = 0
+        for obj in storage.all().values():
+            if obj.__class__.__name__ == line:
+                count += 1
+        print(count)
+
     def get_update_args(self, arg):
         args = arg.split()
 
