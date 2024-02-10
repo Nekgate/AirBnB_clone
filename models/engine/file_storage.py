@@ -11,25 +11,15 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
-class_dict = {
-    "BaseModel": BaseModel,
-    "User": User,
-    "Place": Place,
-    "Amenity": Amenity,
-    "City": City,
-    "Review": Review,
-    "State": State
-}
-
 
 class FileStorage:
     """
-    This file storage class is responsible for the serialization of instances to JSON
+    file storage class is responsible for serialization of instances to JSON
     and deserialization of JSON to instances
     """
-    
+
     def __init__(self):
-        """Initializes an instance and sets the values for private properties"""
+        """Init an instance and sets the values for private properties"""
 
         self.__file_path = "file.json"
         self.__objects = {}
@@ -54,6 +44,15 @@ class FileStorage:
 
     def reload(self):
         """Deserializes the JSON file to __objects."""
+        class_dict = {
+            "BaseModel": BaseModel,
+            "User": User,
+            "Place": Place,
+            "Amenity": Amenity,
+            "City": City,
+            "Review": Review,
+            "State": State
+        }
 
         if os.path.exists(self.__file_path):
             with open(self.__file_path, "r") as f:
