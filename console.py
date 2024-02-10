@@ -26,11 +26,11 @@ class_home = {
 }
 
 class HBNBCommand(cmd.Cmd):
-    prompt = "(hbnb) "
+    prompt = '(hbnb) '
 
     def do_EOF(self, line):
         """ Exit the program when EOF (Ctrl+D) is entered """
-        print()  # Print a newline before exiting
+        print("")  # Print a newline before exiting
         return True
 
     def do_quit(self, line):
@@ -42,7 +42,6 @@ class HBNBCommand(cmd.Cmd):
         """when two arguments involve"""
         print('\n'.join(["Quit command to exit the program"]))
 
-
     def emptyline(self):
         """ overwriting the emptyline method """
         return False
@@ -53,7 +52,7 @@ class HBNBCommand(cmd.Cmd):
         """ Creates a new instance of class and save id """
         if line:
             try:
-                go_cls = globals().get(line, None)
+                glo_cls = globals().get(line, None)
                 obj = glo_cls()
                 obj.save()
                 print(obj.id)  # Print the id
@@ -91,7 +90,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
         else:
             new_string = f"{arrg[0]}.{arrg[1]}"
-            if new_string not in storage.all().key():
+            if new_string not in storage.all().keys():
                 print("** no instance found **")
             else:
                 storage.all().pop(new_string)
@@ -116,7 +115,7 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, line):
         """ Updates an instance based on the class name and id """
         arrg = line.split()
-        if len(arrg) < 1:
+        if not args:
             print("** class name missing **")
             return
         elif arrg[0] not in class_home:
