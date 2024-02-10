@@ -8,6 +8,7 @@ from models.user import User
 from models.place import Place
 from models.state import State
 from models.city import City
+B
 from models.amenity import Amenity
 from models.review import Review
 
@@ -46,6 +47,14 @@ class FileStorage:
         self.__objects[name] = obj.to_dict()
         self.save()
 
+    def destroy(self, obj):
+        """It destroys objects from __objects"""
+
+        name = obj.__class__.__name__ + "." + obj.id
+        if name in self.__objects:
+            del self.__objects[name]
+            self.save()
+
     def save(self):
         """Serializes __objects to the JSON file __file_path."""
 
@@ -58,4 +67,3 @@ class FileStorage:
         if os.path.exists(self.__file_path):
             with open(self.__file_path, "r") as f:
                 self.__objects = json.load(f)
-    
