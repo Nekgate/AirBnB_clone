@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """Module for console that contains the entry point of command interpreter"""
 
-
 import cmd
 import re
 import models
@@ -15,20 +14,40 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 
-class_home = {
-    "BaseModel": BaseModel,
-    "User": User,
-    "Place": Place,
-    "Amenity": Amenity,
-    "City": City,
-    "Review": Review,
-    "State": State
-}
-
 
 class HBNBCommand(cmd.Cmd):
     """Entry point defines a prompt (hbnb)"""
+    __locals = locals()
     prompt = '(hbnb) '
+    __models = ["BaseModel", "User", "State",
+                "City", "Amenity", "Place", "Review"]
+
+    def get_method_and_params(self, arg):
+        method_name = ""
+        parameters - []
+        in_bracket = False
+
+        for i in range(len(arg)):
+            if not in_bracket and arg[i] not in "()":
+                method_name += arg[i]
+            elif not in_bracket and arg[i] in "(":
+                in_bracket = not in_bracket
+            else:
+                parameters = arg[i:-1].split(", ")
+                break
+
+        return method_name, parameters
+
+    def default(self, arg):
+        if '.' in arg:
+            class_name, raw_method_name = arg.split(".", 1)
+            method_name, params = self.get_method_and_params(
+                raw_method_name)
+
+            string_params = " ".join([class_name, " ".join(params)])
+            self.__locals["do_" + method_name](self, string_params)
+        else:
+            Cmd.default(self, arg)
 
     def do_EOF(self, line):
         """Exit the program when EOF (Ctrl+D) is entered"""
@@ -47,143 +66,150 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """ overwriting the emptyline method """
         return False
-        # OR
-        # pass
 
-    def do_create(self, line):
-        """ Creates a new instance of class and save id """
-        if line:
-            try:
-                glo_cls = globals().get(line, None)
-                obj = glo_cls()
-                obj.save()
-                print(obj.id)  # Print id
-            except Exception:
+    def do_create(self, arg):
+        """This creates a command a new instance"""
+        if not arg:
+            print('** class name missing **')
+            return
+
+        class_name = arg.strip()
+        if class_name not in self.__models:
+            print("** class doesn't exist **")
+            return
+
+        new_instance = globals()[class_name]()
+        new_instance.save()
+        print(new_instance.id)
+
+    def do_show(self, arg):
+        """Prints string repr of an instance based on the class name"""
+        try:
+            [class_name, instance_id] = self.get_args(arg)
+
+            if class_name not in self.__models:
                 print("** class doesn't exist **")
-        else:
-            print("** class name missing **")
+                return
 
-    def do_show(self, line):
-        """ Prints the string representation of an instance """
-        arrg = line.split()  # split and assign to variable
+            record = self.find_record(class_name, instance_id)
+            retrieved_record = globals()[class_name](**record)
+            print(retrieved_record)
+        except Exception:
+            pass
 
-        if len(arrg) < 1:
-            print("** class name missing **")
-        elif arrg[0] not in class_home:
-            print("** class doesn't exist **")
-        elif len(arrg) < 2:
-            print("** instances id missing **")
-        else:
-            new_string = f"{arrg[0]}.{arrg[1]}"
-            if new_string not in storage.all():
-                print("** no instance found **")
-            else:
-                print(storage.all()[new_string])
+    def do_destroy(self, arg):
+        """Destroys an instance of a class based on the classs name and id"""
+        try:
+            [class_name, instance_id] = self.get_args(arg)
 
-    def do_destroy(self, line):
-        """ Destroy an instance based on the class name and id """
-
-        arrg = line.split()
-        if len(arrg) < 1:
-            print("** class name missing **")
-        elif arrg[0] not in class_home:
-            print("** class doesn't exist **")
-        elif len(arrg) < 2:
-            print("** instance id missing **")
-        else:
-            new_string = f"{arrg[0]}.{arrg[1]}"
-            if new_string not in storage.all().keys():
-                print("** no instance found **")
-            else:
-                storage.all().pop(new_string)
-                storage.save()
-
-    def do_all(self, line):
-        """ Prints all string representation of all instrrances """
-        objects = []
-        if line == "":
-            print([str(value) for key, value in storage.all().items()])
-        else:
-            strr = line.split(" ")
-            if strr[0] not in class_home:
+            if class_name not in self.__models:
                 print("** class doesn't exist **")
-            else:
-                for key, value in storage.all().items():
-                    clas = key.split(".")
-                    if clas[0] == strr[0]:
-                        objects.append(str(value))
-                print(objects) 
+                return
 
-    def do_update(self, line):
-        """ Updates an instance based on the class name and id """
-        arrg = line.split()
-        if len(arrg) < 1:
-            print("** class name missing **")
-            return
-        elif arrg[0] not in class_home:
-            print("** class doesn't exist **")
-            return
-        elif len(arrg) < 2:
-            print("** instance id missing **")
-            return
+            record = self.find_record(class_name, instance_id)
+            retrieved_record = globals()[class_name](**record)
+            storage.destroy(retrieved_record)
+        except Exception:
+            pass
+
+    def do_all(self, arg):
+        """Prints string repr of all instances based on or not class name"""
+        if not arg:
+            instances = storage.all()
+            instance_list = []
+            for instance in instances.values():
+                instance_list.append(str(instance))
+            print(instance_list)
         else:
-            new_string = f"{arrg[0]}.{arrg[1]}"
-            if new_string not in storage.all().keys():
-                print("** no instance found **")
-            elif len(arrg) < 3:
-                print("** attribute name missing **")
+            class_name = arg.strip()
+            if class_name not in self.__models:
+                print("** class doesn't exist **")
                 return
-            elif len(arrg) < 4:
-                print("** value missing **")
-                return
-            else:
-                setattr(storage.all()[new_string], arrg[2], arrg[3])
-                storage.save()
 
-    def do_count(self, line):
-        """ Print and count all class instances """
-        Cclass = globals().get(line, None)
-        if Cclass is None:
+            file_storage = storage._FileStorage__objects
+            instance_list = []
+            for instance in file_storage.values():
+                if instance['__class__'] == class_name:
+                    instance_list.append(str(instance))
+            print(instance_list)
+
+    def do_update(self, arg):
+        """This updates an instance based on the class name and id"""
+        args = self.get_update_args(arg)
+
+        if args is None:
+            return
+
+        [class_name, instance_id, attribute, value] = args
+
+        try:
+            record = self.find_record(class_name, instance_id)
+            retrieved_record = globals()[class_name](**record)
+            setattr(retrieved_record, attribute, value)
+            setattr(retrieved_record, "updated_at", datetime.now())
+            storage.new(retrieved_reord)
+        except Exception:
+            pass
+
+    def get_update_args(self, arg):
+        args = arg.split()
+
+        if args:
+            if len(args) > 1:
+                if len(args) > 2:
+                    if len(args) > 3:
+                        return [*args[:3] + [self.get_value(args)]]
+                    else:
+                        print("** value missing **")
+                else:
+                    print("** attribute name missing **")
+            else:
+                print("** instance id missing **")
+        else:
+            print('** class name missing **')
+
+    def get_value(self, args):
+        found = False
+        arr = " ".join([str(item) for item in args[3:]])
+        value = ""
+
+        for k in arr:
+            if found and k == '"':
+                found = not found
+                break
+            elif not found and k == '"':
+                found = not found
+            else:
+                value += k
+
+        return value
+
+    def get_args(self, arg):
+        args = arg.split()
+
+        if args:
+            if len(args) == 2:
+                return args
+            else:
+                print("** instance id missing **")
+        else:
+            print('** class name missing **')
+        return None
+
+    def find_record(self, class_name, instance_id):
+
+        if class_name not in self.__models:
             print("** class doesn't exist **")
             return
-        count = 0
-        for obj in storage.all().values():
-            if obj.__class__.__name__ == line:
-                count += 1
-            print(count)
 
+        all = storage.all()
 
-    def default(self, line):
-        
-        if line in None:
-            return
-
-        cmdPattern = "^([A-Za-z]+)\.([a-z]+)\(([^(]*)\)"
-        paramPattern = """^"([^"]+)"(?:,\s*(?:"([^"]+)"|(\{[^}]+\}))(?:,\s*(?:("?[^"]+"?)))?)?"""
-        match = re.match(cmdPattern, line)
-        if not match:
-           super().default(line)
-           return
-        mName, method, param = match.groups()
-        m = re.match(paramPattern, param)
-        param = [item for item in match.groups() if item] if match else []
-
-        cmd = " ".join([mName] + param)
-
-        if method == 'all':
-            return self.do_all(cmd)
-
-        if method == 'count':
-            return self.do_count(cmd)
-
-        if method == 'show':
-            return self.do_show(cmd)
-
-        if method == 'destroy':
-            return self.do_destroy(cmd)
-
-        if method == 'update':
-           return self.do_update(cmd)
+        try:
+            record = all[class_name + "." + instance_id]
+            return record
+        except Exception:
+            print("** no instance found **")
+            return None
 
 
 if __name__ == '__main__':
