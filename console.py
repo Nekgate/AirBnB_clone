@@ -25,6 +25,7 @@ class_home = {
     "State": State
 }
 
+
 class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
 
@@ -47,7 +48,7 @@ class HBNBCommand(cmd.Cmd):
         return False
         # OR
         # pass
-        
+
     def do_create(self, line):
         """ Creates a new instance of class and save id """
         if line:
@@ -64,7 +65,7 @@ class HBNBCommand(cmd.Cmd):
     def do_show(self, line):
         """ Prints the string representation of an instance """
         arrg = line.split()  # split and assign to variable
-        
+
         if len(arrg) < 1:
             print("** class name missing **")
         elif arrg[0] not in class_home:
@@ -80,7 +81,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, line):
         """ Destroy an instance based on the class name and id """
-        
+
         arrg = line.split()
         if len(arrg) < 1:
             print("** class name missing **")
@@ -115,7 +116,7 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, line):
         """ Updates an instance based on the class name and id """
         arrg = line.split()
-        if not args:
+        if len(arrg) < 1:
             print("** class name missing **")
             return
         elif arrg[0] not in class_home:
@@ -137,6 +138,50 @@ class HBNBCommand(cmd.Cmd):
             else:
                 setattr(storage.all()[new_string], arrg[2], arrg[3])
                 storage.save()
+
+    def do_count(self, line):
+        """ Print and count all class instances """
+        Cclass = globals().get(line, None)
+        if Cclass is known:
+            print("** class doesn't exist **")
+            return
+        count = 0
+        for obj in storage.all().values():
+            if obj.__class__.__name__ == line:
+                count += 1
+            print(count)
+
+    def default(self, line):
+        if line in None:
+            return
+
+        cmdPattern = "^([A-Za-z]+)\.([a-z]+)\(([^(]*)\)"
+        paramPattern = """^"([^"]+)"(?:,\s*(?:"([^"]+)"|(\{[^}]+\}))(?:,\s*(?:("?[^"]+"?)))?)?"""
+        match = re.match(cmdPattern, line)
+        if not match:
+            super().default(line)
+            return
+        mName, method, param = match.groups()
+        m = re.match(paramPattern, param)
+        param = [item for item in match.groups() if item] if match else []
+
+        cmd = " ".join([mName] + param)
+
+        if method == 'all':
+            return self.do_all(cmd)
+
+        if method == 'count':
+            return self.do_count(cmd)
+
+        if method == 'show':
+            return self.do_show(cmd)
+
+        if method == 'destroy':
+            return self.do_destroy(cmd)
+
+        if method == 'update':
+            return self.do_update(cmd)
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
