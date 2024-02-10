@@ -24,7 +24,7 @@ class HBNBCommand(cmd.Cmd):
 
     def get_method_and_params(self, arg):
         method_name = ""
-        parameters - []
+        parameters = []
         in_bracket = False
 
         for i in range(len(arg)):
