@@ -31,21 +31,23 @@ class TestUser(unittest.TestCase):
     def test_user_creation(self):
         """Tests the set values for attributes"""
         user = User(email="test@example.com", password="password",
-                    first_name="Stephen", last_name="Ouma")
+                    first_name="John", last_name="Doe")
         self.assertEqual(user.email, "test@example.com")
         self.assertEqual(user.password, "password")
-        self.assertEqual(user.first_name, "Stephen")
-        self.assertEqual(user.last_name, "Ouma")
+        self.assertEqual(user.first_name, "John")
+        self.assertEqual(user.last_name, "Doe")
 
     def test_user_to_dict(self):
         """Tests set dictionary for user"""
         user = User(email="test@example.com", password="password",
-                    first_name="Stephen", last_name="Ouma")
+                    first_name="John", last_name="Doe")
+        user = User()
+        user_dict = user.to_dict()
         self.assertEqual(user_dict['__class__'], 'User')
-        self.assertEqual(user_dict['email'], "test@example.com")
-        self.assertEqual(user_dict['password'], "password")
-        self.assertEqual(user_dict['first_name'], "Stephen")
-        self.assertEqual(user_dict['last_name'], "Ouma")
+        self.assertEqual(user_dict['email'], 'test@example.com')
+        self.assertEqual(user_dict['password'], 'password')
+        self.assertEqual(user_dict['first_name'], 'John')
+        self.assertEqual(user_dict['last_name'], 'Doe')
 
     def test_user_from_dict(self):
         """Tests collection of data from the dictionary"""
@@ -54,15 +56,15 @@ class TestUser(unittest.TestCase):
             'id': '412',
             'email': 'test@example.com',
             'password': 'password',
-            'first_name': 'Stephen',
-            'last_name': 'Ouma'
+            'first_name': 'John',
+            'last_name': 'Doe'
         }
         user = User(**user_data)
         self.assertEqual(user.id, '412')
-        self.assertEqual(user.email, "test@example.com")
-        self.assertEqual(user.password, "password")
-        self.assertEqual(user.first_name, "Stephen")
-        self.assertEqual(user.last_name, "Ouma")
+        self.assertEqual(user.email, 'test@example.com')
+        self.assertEqual(user.password, 'password')
+        self.assertEqual(user.first_name, 'John')
+        self.assertEqual(user.last_name, 'Doe')
 
 
 if __name__ == '__main__':
